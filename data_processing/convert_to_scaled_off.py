@@ -46,8 +46,8 @@ if __name__ == '__main__':
     path = Path(args.path)
 
     p = Pool(mp.cpu_count())
-    p.map(to_off, path.glob('./*/*.obj'))
+    p.map(to_off, path.glob('./*/*/clean*.obj'))
 
     p = Pool(mp.cpu_count())
-    p.map(scale, path.glob('./*/*.off'))
+    p.map(scale, path.glob('./*/*/*.off'))
 

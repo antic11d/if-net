@@ -41,5 +41,5 @@ if __name__ == '__main__':
     root = Path(args.root)
 
     p = Pool(mp.cpu_count())
-    p.map(partial(voxelize, res=args.res), root.glob('./*/*.off'))
+    p.map(partial(voxelize, res=args.res), root.glob('./*/*/*.off'))
 

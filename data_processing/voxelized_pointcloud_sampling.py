@@ -58,7 +58,7 @@ if __name__ == '__main__':
     kdtree = KDTree(grid_points)
 
     p = Pool(mp.cpu_count())
-    paths = list(Path(args.root).glob('./*/*_scaled.off'))
+    paths = list(Path(args.root).glob('./*/*/*_scaled.off'))
 
     # enabeling to run te script multiple times in parallel: shuffling the data
     random.shuffle(paths)

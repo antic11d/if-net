@@ -41,6 +41,6 @@ if __name__ == '__main__':
 
     sample_num = 100000
 
-    paths = Path(args.root).glob('./*/*_scaled.off')
+    paths = Path(args.root).glob('./*/*/*_scaled.off')
     p = Pool(mp.cpu_count())
     p.map(partial(boundary_sampling, sample_num=sample_num, sigma=args.sigma), paths)

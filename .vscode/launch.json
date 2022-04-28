@@ -1,0 +1,108 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Convert to scaled off",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/dimitrije/Repositories/if-net/data_processing/convert_to_scaled_off.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "-path",
+                "/home/dimitrije/Datasets/SIZER/scans"
+            ]
+        },
+        {
+            "name": "Voxelize",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/dimitrije/Repositories/if-net/data_processing/voxelize.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "-root",
+                "/home/dimitrije/Datasets/SIZER/scans",
+                "-res",
+                "128"
+            ],
+        },
+        {
+            "name": "Voxelized sampling",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/dimitrije/Repositories/if-net/data_processing/voxelized_pointcloud_sampling.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "-root",
+                "/home/dimitrije/Datasets/SIZER/scans",
+                "-res",
+                "128",
+                "-num_points",
+                "5000"
+            ]
+        },
+        {
+            "name": "Boundary sampling",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/dimitrije/Repositories/if-net/data_processing/boundary_sampling.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "-root",
+                "/home/dimitrije/Datasets/SIZER/scans",
+                "-sigma",
+                "0.02"
+            ]
+        },
+        {
+            "name": "Filter corrupted",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/dimitrije/Repositories/if-net/data_processing/filter_corrupted.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "-root",
+                "/home/dimitrije/Datasets/SIZER/scans/",
+                "-file",
+                "voxelization_128.npy"
+            ]
+        },
+        {
+            "name": "Voxel to off",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/dimitrije/Repositories/if-net/data_processing/create_voxel_off.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "-root",
+                "/home/dimitrije/Datasets/SIZER/scans/",
+                "-res",
+                "128"
+            ]
+        },
+        {
+            "name": "Pointcloud to off",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/dimitrije/Repositories/if-net/data_processing/create_pc_off.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "-root",
+                "/home/dimitrije/Datasets/SIZER/scans/",
+                "-res",
+                "128",
+                "-num_points",
+                "5000"
+            ]
+        }
+    ]
+}
