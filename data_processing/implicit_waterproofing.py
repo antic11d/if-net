@@ -1,27 +1,32 @@
-import trimesh
 import numpy as np
-from data_processing.libmesh.inside_mesh import check_mesh_contains
+from libmesh.inside_mesh import check_mesh_contains
 import math
-import os
-import glob
-from multiprocessing import Pool
 
 
 def to_rotation_matrix(euler_angles):
-    R_x = np.array([[1, 0, 0],
-                    [0, math.cos(euler_angles[0]), -math.sin(euler_angles[0])],
-                    [0, math.sin(euler_angles[0]), math.cos(euler_angles[0])]
-                    ])
+    R_x = np.array(
+        [
+            [1, 0, 0],
+            [0, math.cos(euler_angles[0]), -math.sin(euler_angles[0])],
+            [0, math.sin(euler_angles[0]), math.cos(euler_angles[0])],
+        ]
+    )
 
-    R_y = np.array([[math.cos(euler_angles[1]), 0, math.sin(euler_angles[1])],
-                    [0, 1, 0],
-                    [-math.sin(euler_angles[1]), 0, math.cos(euler_angles[1])]
-                    ])
+    R_y = np.array(
+        [
+            [math.cos(euler_angles[1]), 0, math.sin(euler_angles[1])],
+            [0, 1, 0],
+            [-math.sin(euler_angles[1]), 0, math.cos(euler_angles[1])],
+        ]
+    )
 
-    R_z = np.array([[math.cos(euler_angles[2]), -math.sin(euler_angles[2]), 0],
-                    [math.sin(euler_angles[2]), math.cos(euler_angles[2]), 0],
-                    [0, 0, 1]
-                    ])
+    R_z = np.array(
+        [
+            [math.cos(euler_angles[2]), -math.sin(euler_angles[2]), 0],
+            [math.sin(euler_angles[2]), math.cos(euler_angles[2]), 0],
+            [0, 0, 1],
+        ]
+    )
 
     R = np.dot(R_z, np.dot(R_y, R_x))
 
@@ -67,6 +72,7 @@ def create_grid_points(mesh, res):
     del X, Y, Z, x
     return points_list
 
+
 def create_grid_points_from_bounds(minimun, maximum, res):
     x = np.linspace(minimun, maximum, res)
     X, Y, Z = np.meshgrid(x, x, x, indexing='ij')
@@ -82,5 +88,5 @@ def create_grid_points_from_bounds(minimun, maximum, res):
 # # Converting to occupancy grid
 def to_occ(mesh, res):
     occ, holes = implicit_waterproofing(mesh, create_grid_points(mesh, res))
-    occ = np.reshape(occ,(res,res,res))
+    occ = np.reshape(occ, (res, res, res))
     return occ
