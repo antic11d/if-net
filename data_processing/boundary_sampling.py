@@ -28,10 +28,9 @@ def boundary_sampling(path: Path, sigma: float, sample_num: int, save_off: bool 
 
         # Get segmentation labels for boundary points
         segm_labels = get_labels(root_dir)
-        clean_scan = trimesh.load(root_dir / 'cleaned_scan.obj')
 
         _, idxs = find_closest_vertices(
-            boundary_points.astype(np.float32), clean_scan.vertices.astype(np.float32)
+            boundary_points.astype(np.float32), mesh.vertices.astype(np.float32)
         )
         labels = segm_labels[idxs]
 
