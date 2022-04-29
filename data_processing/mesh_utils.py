@@ -21,10 +21,10 @@ def find_closest_vertices(points: np.ndarray, vertices: np.ndarray, use_gpu: boo
     index.add(vertices)
     D, I = index.search(points, 1)
 
-    return D, I
+    return D, I.squeeze(-1)
 
 
-def get_labels(scan_dir: Path, save: bool = True):
+def get_labels(scan_dir: Path):
     scan_raw = read_obj(scan_dir / 'model_0.8.obj')
     scan_mesh = Mesh(v=scan_raw.v, f=scan_raw.f)
     scan_mesh.vt = scan_raw.vt

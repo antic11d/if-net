@@ -8,9 +8,12 @@ import argparse
 from functools import partial
 import traceback
 from mesh_utils import get_labels, find_closest_vertices
+from viz import labels_to_colors, viz_pc
 
 
-def boundary_sampling(path: Path, sigma: float, sample_num: int, save_off: bool = True):
+def boundary_sampling(
+    path: Path, sigma: float, sample_num: int, save_off: bool = True, viz: bool = False
+):
     try:
         root_dir = path.parent
         off_path = path
@@ -18,7 +21,7 @@ def boundary_sampling(path: Path, sigma: float, sample_num: int, save_off: bool 
         if out_file.exists():
             return
 
-        mesh = trimesh.load(off_path)
+        mesh = trimesh.load(off_path, process=False)
         points = mesh.sample(sample_num)
 
         boundary_points = points + sigma * np.random.randn(sample_num, 3)
@@ -30,9 +33,12 @@ def boundary_sampling(path: Path, sigma: float, sample_num: int, save_off: bool 
         segm_labels = get_labels(root_dir)
 
         _, idxs = find_closest_vertices(
-            boundary_points.astype(np.float32), mesh.vertices.astype(np.float32)
+            points=np.ascontiguousarray(boundary_points.astype('float32')),
+            vertices=np.ascontiguousarray(mesh.vertices.astype('float32')),
         )
-        labels = segm_labels[idxs]
+        pt_labels = np.array(segm_labels[idxs])
+        if viz:
+            viz_pc(boundary_points, labels_to_colors(pt_labels))
 
         # Get occupancies
         occupancies = iw.implicit_waterproofing(mesh, boundary_points)[0]
@@ -40,7 +46,7 @@ def boundary_sampling(path: Path, sigma: float, sample_num: int, save_off: bool 
         np.savez(
             out_file,
             points=boundary_points,
-            labels=labels,
+            labels=pt_labels,
             occupancies=occupancies,
             grid_coords=grid_coords,
         )
@@ -70,4 +76,6 @@ if __name__ == '__main__':
     print(f'Running in pool of size {use_cpu}')
 
     p = Pool(use_cpu)
-    p.map(partial(boundary_sampling, sample_num=sample_num, sigma=args.sigma), paths)
+    p.map(
+        partial(boundary_sampling, sample_num=sample_num, sigma=args.sigma, viz=args.debug), paths
+    )
